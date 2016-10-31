@@ -102,16 +102,6 @@ $for(polyglossia-otherlangs)$
 $endfor$
 \fi
 $endif$
-$if(natbib)$
-\usepackage{natbib}
-\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
-$endif$
-$if(biblatex)$
-\usepackage[$if(biblio-style)$style=$biblio-style$,$endif$$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$]{biblatex}
-$for(bibliography)$
-\addbibresource{$bibliography$}
-$endfor$
-$endif$
 $if(listings)$
 \usepackage{listings}
 $endif$
@@ -259,10 +249,8 @@ $endif$
 $if(lof)$
 \listoffigures
 $endif$
-$body$
 
-\bibliographystyle{apacite}
-\bibliography{$bibliography$}
+$body$
 
 $for(include-after)$
 $include-after$

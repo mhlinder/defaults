@@ -1,9 +1,10 @@
 ---
 title: This is a title
-bibliography: ~/Dropbox/School/references/references.bib
+bibliography: ~/links/references.bib
+csl: apa.csl # located in ~/.csl
 output:
   pdf_document:
-    template: ~/Dropbox/Programming/active/defaults/rmd/mhl.tex
+    template: ~/links/defaults/rmd/mhl.tex
 ---
 
 A citation: @gelman2014bayesian
@@ -89,4 +90,6 @@ So, we can find the posterior distribution as
 \begin{gather}
 p(\theta|\mathbf{y}) \propto p(\beta_0|\mathbf{y}) p(\beta_1|\mathbf{y})
 \end{gather}
+
+# References
 
