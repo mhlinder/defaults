@@ -7,6 +7,11 @@ output:
     template: ~/links/defaults/rmd/mhl.tex
 ---
 
+We consider the R dataset
+[Loblolly](http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/Loblolly.html),
+a data frame with measurements of height (feet) and age (year), for 84
+Loblolly pines.
+
 A citation: @gelman2014bayesian
 
 # A classical (frequentist) approach
@@ -17,20 +22,20 @@ Consider a simple linear regression of tree height $y_i$ on age $x_i$
 y_i = \beta_0 + \beta_1 x_i + \epsilon_i
 \end{gather}
 
-where $\epsilon_i$ are independent $N(0,\sigma^2)$ errors. For how it
-will pertain to the Bayesian analysis, note two things: first, we can
-equivalently write
+where $\epsilon_i$ are independent $N(0,\sigma^2)$ errors.  Note that
+we can equivalently write
 
 \begin{equation}
 y_i \sim N(\beta_0 + \beta_1 x_i, \sigma^2)
 \end{equation}
 
-and second, this implies that the likelihood function for the data
-$\mathbf{y}=(y_1,\dots,y_n)'$ is $f(\mathbf{y}|\theta, \mathbf{x})$
-where the data $\mathbf{x}=(x_1,\dots,x_n)'$ is assumed known and the
-parameter vector is $\theta = (\beta_0, \beta_1)'$.
+and the likelihood function for the data $\mathbf{y}=(y_1,\dots,y_n)'$
+is $f(\mathbf{y}|\theta, \mathbf{x})$, with $f(\cdot|\theta,
+\mathbf{x})$ the density of a $N(\beta_0 + \beta_1 x_i, \sigma^2)$
+distribution; the data $\mathbf{x}=(x_1,\dots,x_n)'$ is assumed
+known; and $\theta = (\beta_0, \beta_1)'$ a parameter vector.
 
-A regression fit is given by
+The least squares regression fit is
 
 ```{r}
 
@@ -43,7 +48,7 @@ Note, in particular, that the regression coefficient $\beta_1$ is
 highly significant, the $R^2$ is high, and a QQ plot indicates the
 residuals are approximately normal:
 
-```{r echo = FALSE, fig.width = 4, fig.height = 4, fig.align='center'}
+```{r echo = FALSE, fig.align='center'}
 
 qqnorm(residuals(m), main = "")
 qqline(residuals(m))
@@ -55,7 +60,10 @@ qqline(residuals(m))
 A conventional, convenient, and conjugate choice in Bayesian
 regression gives independent normal priors to $\beta_0$ and
 $\beta_1$. For simplicity, let $\beta_0 \sim N(0, 1)$ and $\beta_1
-\sim N(0, 1)$. A Bayesian analysis revolves around the fundamental
+\sim N(0, 1)$, and we'll suppose the variance is known to
+be exactly the sample standard deviation, i.e., $\sigma^2=$ `r sd(residuals(m))`.
+
+A Bayesian analysis revolves around the fundamental
 relationship between the prior distribution $p(\theta)$ and the
 posterior distribution $p(\theta|\mathbf{y})$ of the
 parameter vector $\theta = (\beta_0, \beta_1)'$:
@@ -78,18 +86,54 @@ f(\mathbf{y}|\theta,\mathbf{x}) = \prod_{i=1}^n f(y_i|\theta,x_i)
 
 where we omit the constant of proportionality for clarity.
 
-Too, the prior for $\theta$ is
+Too, the joint prior for $\theta$ is
 
 \begin{equation}
-p(\theta) = p(\beta_0) p(\beta_1) \propto
-\exp \left[ -\frac{1}{2} \left( \beta_0^2 + \beta_1^2 \right) \right]
+p(\theta) = p(\beta_0) p(\beta_1)
 \end{equation}
 
-So, we can find the posterior distribution as
+where $p(\cdot)$ is a standard normal density.
+
+Then, the posterior distribution can be found by factoring the basic
+Bayes identity
 
 \begin{gather}
-p(\theta|\mathbf{y}) \propto p(\beta_0|\mathbf{y}) p(\beta_1|\mathbf{y})
+p(\theta|\mathbf{y}) \propto f(\mathbf{y}|\beta_0, \beta_1,
+\mathbf{x})p(\theta) \propto f(\mathbf{y}|\beta_0, \beta_1,
+\mathbf{x})
+p(\beta_0) p(\beta_1)
 \end{gather}
+
+It is possible, and only somewhat messy, to find an analytic solution
+for the posterior $p(\theta|\mathbf{y})$: a normal prior for normal
+linear regression coefficients is conventional because the posterior
+is still normal. In fact, as the number of observations increases
+asymptotically, the posterior mean values for $\theta$ will converge
+to $(\beta_0,\beta_1)'$.
+
+Note that calculating the analytic form of the normal posterior can be
+performed without the normalizing constant, and hence written as a
+proportionality, because the form of the density uniquely determines
+the distribution, and only a single normalizing constant is
+valid. *This fact depends squarely on the prior being a proper
+probability density,* and will not hold for arbitrary improper
+prior. Because the parameters $\beta_1,\beta_2$ are valued on the
+entire real line, we might, for instance, choose to give an improper
+uniform prior, i.e., $\beta_0\propto 1$. Then, it is necessary to make
+sure the posterior is valid by using the equality
+
+\begin{gather}
+p(\theta|\mathbf{y}) =
+\frac{f(\mathbf{y}|\beta_0,\beta_1,\mathbf{x})p(\theta)}{\int_\Theta
+f(\mathbf{y}|\beta_0,\beta_1,\mathbf{x})p(\theta)\, d\theta}
+\end{gather}
+
+For all but the simplest models, this type of direct calculation can
+be tedious, or possibly analytically intractable. For that reason,
+much of the work can be practically side-stepped, by using the Gibbs
+sampler.
+
+## Gibbs sampling
 
 # References
 
