@@ -80,9 +80,9 @@ $if(keywords)$
 $endif$
 $if(colorlinks)$
             colorlinks=true,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$Black$endif$,
-            citecolor=$if(citecolor)$$citecolor$$else$Black$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$Black$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$black$endif$,
+            citecolor=$if(citecolor)$$citecolor$$else$black$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$black$endif$,
 $else$
             pdfborder={0 0 0},
 $endif$
@@ -217,7 +217,8 @@ $endif$
 \begin{document}
 {
   \centering
-  $if(title)$ $title$ \\$endif$
+  $if(title)$\Large $title$ \\[1em]$endif$
+  \normalsize
   $if(author)$$author$$else$Henry Linder \\
   \small{\texttt{mhlinder@gmail.com}} $endif$\\
   $if(date)$$date$$else$\today$endif$ \\[2em]
