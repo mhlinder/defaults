@@ -1,0 +1,737 @@
+
+% \documentclass[fontsize=7pt]{scrartcl}
+\documentclass[fontsize=5pt]{scrartcl}
+
+\setlength\parindent{0pt}
+
+\usepackage{multicol}
+% \usepackage[margin=.5in]{geometry}
+\usepackage[margin=.25in]{geometry}
+\usepackage{amsmath}
+\usepackage{bm}
+
+\usepackage{mathtools}
+\DeclareMathOperator{\E}{E}
+
+% visually separate sections
+\newcommand{\horizline}{\rule{\linewidth}{.5pt}}
+
+\begin{document}
+\pagenumbering{gobble}
+\begin{multicols}{2}
+\section{Decision Theory Review}
+
+\subsection{Loss functions}
+
+\begin{itemize}
+\item We assume $L(\theta, a)$ is defined for all $(\theta,a)
+  \in \Theta\times {\cal A}$, and $L(\theta,a)\geq B>-\infty$
+\item \textbf{Squared-error loss}
+  \begin{itemize}
+  \item SEL: $L(\theta,a) = (\theta-a)^{2}$
+  \item Weighted SEL: $L(\theta,a) = w(\theta)(\theta-a)^{2}$
+  \item Quadratic loss: $L(\bm\theta, \mathbf{a}) = (\bm\theta
+    -\mathbf{a})'\mathbf{Q}(\bm\theta-\mathbf{a})$ where $\mathbf{Q}$
+    is positive definite
+  \end{itemize}
+\item \textbf{Linear loss}
+  \begin{itemize}
+  \item ${\cal A} = \Theta\subset \mathbf{R}$
+    \begin{equation}
+      L(\theta,a) = \begin{cases} K_{0}(\theta-a) & \theta-a\geq 0 \\
+        K_{1}(a-\theta) & \theta-a<0 \end{cases}
+    \end{equation}
+  \end{itemize}
+\item \textbf{Linex loss}
+  \begin{itemize}
+  \item ${\cal A}=\Theta\subset\mathbf{R}$
+    \begin{equation}
+      L(\theta,a) = e^{c(\theta-a)}-c(\theta-a) -1,\quad c\neq 0
+    \end{equation}
+  \end{itemize}
+\item \textbf{Entropy loss}
+\item
+  \begin{itemize}
+  \item ${\cal A}=\Theta$
+    \begin{equation}
+      L(\theta,a) = - \E_{\theta}\left[\log \frac{p_{a}(X)}{p_{\theta}(X)}\right]
+    \end{equation}
+
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Unbiasedness}
+
+\begin{itemize}
+\item Decision rule $\delta:{\cal X}\to{\cal A}$ is unbiased under
+  $L(\theta,a)$ if
+  \begin{equation}
+    \E_{\theta}L(\theta,\delta)\leq \E_{\theta} L(\theta',
+    \delta)\quad \forall\theta,\theta'\in\Theta
+  \end{equation}
+
+\end{itemize}
+
+\subsection{Bayes, Minimax}
+
+\begin{itemize}
+\item Frequentist risk of rule $\delta$:
+  \begin{equation}
+    R(\theta,\delta) = \E_{\theta}L(\theta,\delta) = \int_{{\cal
+        X}}L(\theta,\delta(x))d P_{\theta}(x)
+  \end{equation}
+\item Bayes risk
+  \begin{equation}
+    r(\pi,\delta) = E^{\pi}R(\theta,\delta) = \int_{\Theta}
+    \int_{{\cal X}} L(\theta,\delta(x))dP_{\theta}(x)d\pi(\theta)
+  \end{equation}
+
+\item Rule $\delta_{1}$ is $R$-better than $\delta_{2}$ if
+  \begin{gather}
+    R(\theta,\delta_{1})\leq R(\theta,\delta_{2}) \quad \forall \theta \\
+    \exists\theta \text{ s.t.} \quad R(\theta,\delta_{1})<R(\theta,\delta_{2})
+  \end{gather}
+\item $\delta_{1}$, $\delta_{2}$ $R$-equivalent if
+  \begin{equation}
+    R(\theta,\delta_{1}) = R(\theta,\delta_{2})\quad\forall\theta
+  \end{equation}
+\item Rule $\delta$ is a Bayes rule wrt proper prior $\pi$ if
+  \begin{equation}
+    r(\pi,\delta) = \inf_{\delta^{*}\in{\cal D}}r(\pi,\delta^{*})
+  \end{equation} and we write it $\delta^{\pi}$, and $r(\pi)=r(\pi,\delta^{\pi})$
+  \begin{itemize}
+  \item If $r(\pi)=\infty$, any rule is Bayes
+  \end{itemize}
+\item A Bayes rule can be found by choosing an action to minimize the
+  posterior expected loss for all $x$ in the support of the marginal
+  \begin{equation}
+    m(A) = \int P_{\theta}(A)d\pi(\theta)
+  \end{equation}
+  that is
+  \begin{equation}
+    \delta^{\pi}(x) = \text{arg inf}_{a\in{\cal A}}\int_{\Theta}
+    L(\theta,a)d\pi(\theta|x)\quad \forall x
+  \end{equation}
+
+\item If $\pi$ is improper, a rule satisfying this condition is a
+  generalized Bayes rule
+\item $\delta$ is admissible if there is no $R$-better rule,
+  inadmissable if there is
+\item $\delta$ is minimax if it minimizes
+  $\sup_{\theta}R(\theta,\delta^{*})$ among all rules
+  $\delta^{*}\in{\cal D}$, ie,
+  \begin{equation}
+    \sup_{\theta\in\Theta}R(\theta,\delta) = \inf_{\delta^{*}\in{\cal D}}\sup_{\theta\in\Theta}R(\theta,\delta^{*})
+  \end{equation}
+\item If $\Theta$ discrete, prior $\pi$ s.t. $\pi(\theta)>0$
+  $\forall\theta\in\Theta$, and $r(\pi)<\infty$, then $\delta^{\pi}$
+  admissible
+\item If Bayes rule unique, it is admissible
+\item \textbf{Blyth Theorem}: If $\Theta$ discrete, $\delta$ a rule, and $\exists$ sequence of
+  generalized priors $\pi_{n}$ s.t. $\lim \inf
+  \pi_{n}(\theta)>0$ $\forall\theta$, $r(\pi_{n})<\infty$,
+  $r(\pi_{n},\delta)-r(\pi_{n})\to0$, then $\delta$ admissible
+\item If $\pi$ proper such that
+  $r(\pi)=\sup_{\theta\in\Theta}R(\theta,\delta^{\pi})$, then
+  $\delta^{\pi}$ minimax; if unique Bayes wrt $\pi$, it is also unique
+  minimax
+\item Generalized Bayes rule with constant (finite) risk is minimax,
+  called an equalizer
+\item Admissible rule with constant risk is minimax
+\item Unique minimax is admissible
+\item Minimax need not be admissible
+\item Admissible need not be Bayes
+\item Minimax need not be Bayes
+\end{itemize}
+
+\subsection{Complete classes}
+
+\begin{itemize}
+\item Class of rules ${\cal C}$ is essentially complete if
+  $\forall\delta\not\in{\cal C}$, $\exists\delta'\in{\cal C}$
+  $R$-better or $R$-equivalent to $\delta$
+\item ${\cal C}$ complete if $\forall\delta\not\in{\cal C}$,
+  $\exists\delta'\in{\cal C}$ $R$-better than $\delta$
+\item ${\cal C}$ is minimal complete if complete and no proper subset
+  complete
+\end{itemize}
+
+\section{Probability Background I}
+
+\subsection{Maximum Likelihood Principle}
+
+\begin{itemize}
+\item $X$ a sample, $\theta\in\Theta$ unknown, ${\cal
+    P}=\{P_{\theta},\theta\in\Theta\}$ is the family of $X$
+
+\item Maximum likelihood principle says we should choose estimate
+  \begin{equation}
+    \hat{\theta} = \arg\max_{\theta\in\Theta} a(\theta)L_{x}(\theta)
+  \end{equation}
+\item For point estimation, $a(\theta)=\text{constant}\neq 0$, so MLE
+  is
+  \begin{equation}
+    \hat{\theta} = \arg\max_{\theta\in\Theta} L_{x}(\theta)
+  \end{equation}
+
+
+\item For testing problem $a(\theta) =0$ for incorrect decision
+
+\end{itemize}
+
+\subsection{Sufficient statistics}
+
+\begin{itemize}
+\item $T=T(X)$ is sufficient for $X$ or ${\cal
+    P}=\{P_{\theta},\theta\in\Theta\}$ or $\theta$ if conditional
+  distribution of $X$ given $T(X)$ is independent of $\theta$
+\item $T(X)\equiv X$ is always sufficient
+
+\item \textbf{Factorization Criterion}: If family ${\cal P}$ of dists
+  of $X$ is dominated by $\sigma$-finite measure $\mu$, $p_{\theta}$
+  the pdf of $P_{\theta}$ wrt $\mu$, then $T=T(X)$ is sufficient for
+  ${\cal P}$ iff $\exists$ non-negative functions $q_{\theta}(t)$,
+  $\theta\in\Theta$, and $h(x)$, such that
+  \begin{equation}
+    p_{\theta}(x) = q_{\theta}(T(x))h(x)\quad (a.e. \mu)
+  \end{equation}
+
+\item Under same conditions, if $T$ sufficient, then
+  $\forall\theta^{*},\theta$, $p_{\theta}(x)/p_{\theta^{*}}(x)$ is a
+  function only of $T(x)$. Conversly, if $\exists$ fixed $\theta^{*}$
+  with $p_{\theta^{*}}(x)>0$ s.t. $\forall\theta$,
+  $p_{\theta}(x)/p_{\theta^{*}}(x)$ is a function only of $T(x)$, then
+  $T$ sufficient
+
+\item \textbf{Koopman-Darmois family}:
+  $\mathbf{X}=(X_{1},\dots,X_{n})$, $X_{i}$ iid $f_{\theta}(x)$,
+  $f_{\theta}(x) = \exp\{P(\theta)+xQ(\theta)+R(x)\}$, $Q$ a 1-1
+  function $\theta$; $\sum_{i}X_{i}$ sufficient
+
+\item \textbf{Bayes sufficiency}: If under a prior $\pi$ on $\Theta$,
+  $\pi(\theta)>0$ $\forall\theta$, posterior $\pi(\theta|x)$ exists,
+  depends only on $T(x)$ nd $\theta$, then $T$ is sufficient for
+  $\theta$. Conversely, if $T$ is sufficient for $\theta$, then under
+  any prior $\pi$, the posterior $\pi(\theta|x)$ (if it exists)
+  depends only on $T(x)$ and $\theta$
+
+\end{itemize}
+
+\subsection{Minimal sufficient statistics}
+
+\begin{itemize}
+\item Sufficient statistic $S$ is minimal sufficient for ${\cal P}$ if $\forall$
+  sufficient $T$, there is measurable function $f$ of $T$ such that
+  $S=f(T)$ (a.e. ${\cal P}$)
+\item Any 1-1 measurable function of minimal suff. $S$ is also
+  minimal sufficient
+\item \textbf{Criterion for minimal sufficiency}: Let $S(X)$ be a
+  statistic, $\pi$ a prior on $\Theta$ s.t.
+  \begin{equation}
+    0<m_{\pi}(x) = \int p_{\theta}(x)d\pi(\theta)<\infty\quad (a.e.\mu)
+  \end{equation}
+  If $\forall x, x'$,
+  \begin{equation}
+    \frac{p_{\theta}(x)}{m_{\pi}(x)}=\frac{p_{\theta}(x')}{m_{\pi}(x')}
+    \iff S(x) = S(x')
+  \end{equation}
+  then $S$ is minimal sufficient for $\theta$
+  \begin{itemize}
+  \item If $p_{\theta}(x)>0$ $\forall\theta,x$, then we can pick
+    arbitrary $\theta^{*}$, $\pi$ singular measure with mass 1 at
+    $\theta^{*}$
+  \item If $\pi(\theta)>0$ $\forall\theta$, this is equivalent to
+    checking if
+    \begin{equation}
+      \pi(\theta|x) = \pi(\theta|x') \iff S(x) = S(x')
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Corollary}: Let $S$ be a statistic.
+  \begin{enumerate}
+  \item If $L_{x}(\theta)>0$ $\forall(x,\theta)$, and if for any pair
+    $(x,x')$
+    \begin{equation}
+      S(x) = S(x') \iff \frac{L_{x}(\theta)}{L_{x'}(\theta)}\text{ is constant}
+    \end{equation}
+    then $S$ is minimal sufficient
+  \item If $S$ sufficient, $S(x) = S(x')$ $\forall x,x'$ satisfying
+    $L_{x}(\theta)=CL_{x'}(\theta)$, $C=C(x,x')$ a constant, then $S$
+    minimal sufficient
+  \end{enumerate}
+
+\end{itemize}
+
+\section{Probability Background II}
+
+\subsection{Expoenential family}
+
+\begin{itemize}
+\item Exponential family has density
+  \begin{equation}
+    p_{\theta}(x) = C(\theta)\exp\left\{
+      \sum_{j=1}^{k}Q_{j}(\theta)T_{j}(x) \right\} h(x)
+  \end{equation}
+  with respect to $\sigma$-finite measure $\mu$ over ${\cal X}$ such
+  that $p_{\theta}>0$ for all $x\in{\cal X}$. Also, the unnormalized
+  density (ie, without $C(\theta)$) must have a finite integral over
+  ${\cal X}$ for all $\theta\in\Theta$
+\item Then by factorization, a sufficient statistic for $\theta$ is
+  $(\sum_{i=1}^{n}T_{1}(X_{i}), \dots, \sum_{i=1}^{n}T_{k}(X_{i}))$
+
+\item We can get \emph{canonical form} by absorbing $h(x)$ into
+  $d\mu$, treat $(Q_{1}(\theta),\dots,Q_{k}(\theta))$ as a parameter
+  in $\mathbf{R}^{k}$ so that
+  \begin{equation}
+    p_{\theta}(x) = C(\theta) \exp\left\{ \sum_{j=1}^{k}
+      \theta_{j}T_{j}(x) \right\}
+  \end{equation}
+
+\item Then, for the canonical exponential family, the natural
+  parameter space is
+
+  \begin{equation}
+    \Omega = \left\{ \theta\in\mathbf{R}^{k} : \int \exp[\theta\cdot
+      T(x)]d\mu(x) <\infty \right\}
+  \end{equation}
+  and this is convex
+\item $T(\mathbf{X})$ is minimal sufficient for $\theta$ if there is
+  $\theta^{*}\in\Theta$ such that
+  $Q_{1}(\theta)-Q_{1}(\theta^{*}),\dots,Q_{k}(\theta)-Q_{k}(\theta^{*})$
+  are linearly independent functions of $\theta\in\Theta$.
+\end{itemize}
+
+\subsection{Complete statistics}
+
+\begin{itemize}
+\item Statistic $V(X)$ is ancillary for $\theta$ if its distribution
+  does not depend on $\theta$ and first-order ancillary if
+  $E_{\theta}V(X)$ is constant, independent of $\theta$
+
+\item A statistic $T$ is complete for $\theta$ if any real valued
+  measurable function $g$ of $T$ is such that
+  \begin{equation}
+    E_{\theta}g(T) = 0\quad\forall\theta \implies g(T) = 0\quad (a.e.{\cal P})
+  \end{equation}
+
+\item If the implication holds for all bounded real valued measurable
+  $g$, then $T$ is boundedly complete for $\theta$
+\item For the exponential family, $T(\mathbf{X})$ is complete if the
+  interior of $\Omega$ is nonempty
+\end{itemize}
+
+\subsection{Bounded completeness and sufficiency}
+
+\begin{itemize}
+\item \textbf{Bahadur's Theorem}: If a sufficient statistic is
+  boundedly complete, then it is minimal sufficient
+\end{itemize}
+
+\subsection{Basu's Theorem}
+
+\begin{itemize}
+\item Suppose $X\sim P_{\theta}$, and $T$ is a complete and sufficient
+  statistic for $\theta$. Then $T$ is independent of any ancillary
+  statistic of $X$ for $\theta$
+\end{itemize}
+
+\section{Uniformly Most Powerful Tests I}
+
+\begin{itemize}
+\item The rejection region of a test $\phi$ is $\{x:\phi(x)=1\}$,
+  boundary region $\{x :0<\phi(x)<1\}$, acceptance region
+  $\{x:\phi(x)=0\}$
+\item The power function of $\phi$ is
+  \begin{equation}
+    \beta(\theta) = \beta_{\phi}(\theta) = E_{\theta}\phi(X)
+  \end{equation}
+
+\item The significance level / size $\alpha$ of $\phi$ is
+  \begin{equation}
+    \alpha=\alpha_{\phi}=\sup_{\theta\in\Theta_{0}}\beta_{\phi}(\theta)
+  \end{equation}
+\end{itemize}
+
+\subsection{Neyman-Pearson Lemma}
+
+\begin{itemize}
+\item Consider hypotheses
+  \begin{equation}
+    H_{0}:X\sim P_{0} \text{ vs. } H_{1}:X\sim P_{1}
+  \end{equation}
+  Suppose $P_{0},P_{1}$ have densities $p_{0},p_{1}$ wrt dominating measure
+  $\mu$ (eg $\mu=P_{0}+P_{1}$).
+  \begin{enumerate}
+  \item There exists test $\phi$, constant $k$ such that
+    \begin{gather}
+      E_{0}\phi(X) = \alpha \\
+      \phi(x) = \begin{cases} 1 & p_{1}(x) > kp_{0}(x) \\ 0 & p_{1}(x)
+        < kp_{0}(x) \end{cases}
+    \end{gather}
+  \item Any test satisfying these two for some $k$ is most powerful at
+    level $\alpha$
+  \end{enumerate}
+\item MP test uniquely determined except on boundary set $\{x
+  :p_{1}(x) = kp_{0}(x)\}$ where it can be any function
+  $0\leq\phi(x)\leq1$ as long as it has size $\alpha$
+\item The test $\phi(x) = \mathbf{1}\{p_{1}(x) /p_{0}(x)>k\}$ is MP
+  at level $P_{0}(p_{1}(X)/p_{0}(X)\leq k)$
+\item Critical value $k$ is any $(1-\alpha)$ quantile of
+  $p_{1}(X)/p_{0}(X)$ under $P_{0}$, can be constant on the boundary
+  where the ratio equals $k$
+
+\item For any $t\in[0,1]$ the $t$th quantile of df $F$ is any number
+  $x$ such that
+  \begin{equation}
+    F(x-)\leq t\leq F(x)
+  \end{equation}
+
+\item $x$ is a $t$th quantile $\iff$ $x\in[F^{*}(t),F^{\#}(t)]$ where
+  \begin{equation}
+    F^{*}(t) = \inf\{ x:F(x)\geq t\},\quad F^{\#}(t) =
+    \sup\{x:F(x)\leq t\}
+  \end{equation}
+
+\item If $F$ continuous and strictly increasing, then $F^{*}$ and
+  $F^{\#}$ are identical to $F^{-1}$. We refer to $F^{*}$ as the
+  inverse of $F$
+\item Also, if $U\sim U(0,1)$, then $F^{*}(U)\sim F$
+
+\item Corollary: If $0<\alpha<1$, $\beta$ is the power of the MP level
+  $\alpha$ test, then $\alpha<\beta$ unless $P_{0}=P_{1}$
+\end{itemize}
+
+\section{Uniformly Most Powerful Tests II}
+
+\subsection{MLR and UMP tests of composite hypotheses}
+
+\begin{itemize}
+\item Let $C_{\alpha} = \{\phi: \phi\text{ is of size
+  }\alpha\}$. $\phi_{0}$ is uniformly most powerful of size $\alpha$
+  if it has size $\alpha$ and
+  $\beta_{\phi_{0}}(\theta)\geq\beta_{\phi}(\theta)$
+  $\forall\theta\in\Theta_{1}$ and $\phi\in C_{\alpha}$
+\item If there is real-valued function $T(X)$ such that for any
+  $\theta<\theta'$, distributions $P_{\theta},P_{\theta'}$ are
+  distinct, the likelihood ratio
+  $p_{\theta'}(x)/p_{\theta}(x)=g(T(X))$ where $g$ is a nondecreasing
+  function, then ${\cal P}$ has the MLR in $T$.
+\item It is trivial to see that $T$ is sufficient
+\item If $\Theta=\{\theta_{0},\theta_{1}\}$, then MLR is satisfied by
+  choosing $T(x) = p_{\theta_{1}}(x)/p_{\theta_{0}}(x)$
+
+\item \textbf{Theorem:} Suppose $X$ has density $p_{\theta}(x)$ with
+  MLR in $T(x)$, $0\leq\alpha\leq1$. Then
+  \begin{enumerate}
+  \item There is a UMP $\alpha$-level test of
+    $H_{0}:\theta\leq\theta_{0}$ vs. $H_{1}:\theta>\theta_{0}$ of the form
+    \begin{equation}
+      \phi(x) = \begin{cases}
+        1 & T(x) > C \\
+        \gamma & T(x) = C \\
+        0 & T(x) < C
+      \end{cases}
+    \end{equation}
+    where $C,\gamma$ chosen so that $E_{\theta_{0}}\phi(X) = \alpha$.
+  \item One such choice is $C=(1-\alpha)$th quantile of $T(X)$ under
+    $P_{\theta_{0}}$, and $\gamma =
+    (\alpha-P_{\theta_{0}}\{T(X)>C\})/P_{\theta_{0}}\{T(X) = C\}$ if
+    $P_{\theta_{0}}\{T(X)=C\}>0$, else $\gamma$ can be any number in
+    $[0,1]$.
+  \item The power function of $\phi$ is strictly increasing for all
+    $\theta$ for which $0<\beta(\theta)<1$
+  \item For all $\theta'$ the test is UMP for
+    $H_{0}':\theta\leq\theta'$ vs $H_{1}': \theta>\theta'$ where
+    $\alpha'=\beta(\theta')$
+  \item For any $\theta<\theta_{0}$, the test minimizes
+    $\beta(\theta)$ among level $\alpha$ tests
+  \end{enumerate}
+\item \textbf{Corollary:} If real-parameter family $p_{\theta}$ with
+  df $F_{\theta}$ has MLR in $T(x)=x$, then for all $x$,
+  $F_{\theta}(x)$ is strictly decreasing in $\theta$ for which
+  $0<F_{\theta}(x)<1$
+
+\item \textbf{Theorem:} UMP test for $H_{0}:\theta\geq\theta_{0}$ vs
+  $H_{1}:\theta<\theta_{0}$ is
+    \begin{equation}
+      \phi(x) = \begin{cases}
+        1 & T(x) < C \\
+        \gamma & T(x) = C \\
+        0 & T(x) > C
+      \end{cases}
+    \end{equation}
+    and the power function $\beta(\theta)$ is strictly increasing, and
+    for any $\theta<\theta_{0}$, it minimizes $\beta(\theta)$ among
+    level $\alpha$ tests
+  \item Note this is just $1-\phi$ for the original UMP with the
+    hypotheses switched
+\end{itemize}
+
+\subsection{Generalized NP lemma}
+
+\begin{itemize}
+
+\item For $H_{0}:\theta\not\in(\theta_{1},\theta_{2})$ vs
+  $H_{1}:\theta\in (\theta_{1},\theta_{2})$ where
+  $\theta_{1}<\theta_{2}$, if $p_{\theta}(x) = c(\theta)\exp[\theta
+  T(x)]h(x)$, a UMP level $\alpha$ test is
+     \begin{equation}
+      \phi(x) = \begin{cases}
+        1 & C_{1} < T(x) < C_{2} \\
+        \gamma_{i} & T(x) = C_{i},\enskip i=1,2 \\
+        0 & T(x) < C_{1},\enskip T(x)>C_{2}
+      \end{cases}
+    \end{equation}
+    where $C_{1}, C_{2}, \gamma_{1}, \gamma_{2}$ chosen so that
+    $\beta_{\phi}(\theta_{1})=\beta_{\phi}(\theta_{2})=\alpha$. Then
+    $\phi$ minimizes $\beta_{\phi}(\theta)$ among level $\alpha$
+    tests. For $0<\alpha<1$, $\beta_{\phi}(\theta)$ has a maximum at a
+    point $\theta_{0}\in(\theta_{1},\theta_{2})$, and decreases
+    strictly as $\theta$ tends away from $\theta_{0}$ in either
+    direction, unless there are two values $t_{1},t_{2}$ such that
+    $P_{0}(T(X) = t_{1} \text{ or } t_{2})=1$ for all $\theta$
+\end{itemize}
+
+\subsection{Hellinger Distance and Consistency of NP-type tests}
+
+\begin{itemize}
+\item The Hellinger distance ${\cal H}(P,Q)$ betwen $P,Q$ is
+  \begin{equation}
+    {\cal H}^{2}(P,Q) = \frac{1}{2}\int (\sqrt{p}-\sqrt{q})^{2}d\mu =
+    1 - \int \sqrt{pq}d\mu = 1-\rho(P,Q)
+  \end{equation}
+  where $\rho(P,Q)=\int\sqrt{pq}d\mu$ is the affinity between $P,Q$.
+\item The total variation distance between $P,Q$ is
+  \begin{equation}
+    \|P-Q\|_{1}=\int |p-q|d\mu
+  \end{equation}
+\item $0\leq\rho(P,Q)\leq1$, ${\cal H}^{2}(P,Q)=0\iff p=q$ a.e. $\mu
+  \iff \rho(P,Q)=1$
+
+\item  The following relationship holds
+  \begin{equation}
+    {\cal H}^{2}(P,Q) \leq\frac{1}{2}\|P-Q\|_{1}\leq{\cal
+      H}(P,Q)[2-{\cal H}^{2}(P,Q)]^{1/2} = [1-\rho^{2}(P,Q)]^{1/2}
+  \end{equation}
+
+\item For NP test of $H_{0}:X\sim P$ vs $H_{1}:X\sim Q$ of the form
+  \begin{equation}
+    \phi(x) = \begin{cases} 1 & q(x)>Cp(x) \\
+      0 & q(x)<Cp(x) \end{cases}
+  \end{equation}
+
+  for $C>0$, then
+  \begin{equation}
+    \alpha_{\phi}\leq C^{-1/2}\rho(P,Q),\quad 1-\beta_{\phi}\leq C^{1/2}\rho(P,Q)
+  \end{equation}
+\end{itemize}
+
+\section{Unbiasedness for Hypothesis Testing I}
+
+\subsection{Unifromly Most Powerful Unbiased Tests}
+
+\begin{itemize}
+\item Suppose $X\sim P_{\theta}$ for some $\theta\in\Theta$, and
+  $\phi$ is level $\alpha$ for $H_{0}:\theta\in\Theta_{0}$ vs
+  $H_{1}:\theta\in\Theta_{1}$ where $\{\Theta_{0},\Theta_{1}\}$ is a
+  partition of $\Theta$.
+
+\item $\phi$ is unbiased if $\beta_{\phi}(\theta)\leq\alpha$
+  $\forall\theta\in\Theta_{0}$ and $\beta_{\phi}(\theta)\geq\alpha$
+  $\forall\theta\in\Theta_{1}$
+\item If $\phi$ is UMP, it is unbiased because it has size $\alpha$
+  and its power cannot be less than that of randomized
+  $\phi^{*}(x)=\alpha$
+
+\item $\phi$ is uniformly most powerful unbiased at level $\alpha$ if
+  it is unbiased and $\beta_{\phi}(\theta)\geq\beta_{\phi'}(\theta)$
+  $\forall\theta\in\Theta_{1}$ and all unbiased level-$\alpha$ tests
+  $\phi'$
+
+\item Any UMP test is UMPU
+
+\item Test $\phi$ is similar on the boundary at level $\alpha$ if
+  $\beta_{\phi}(\theta)=\alpha$ $\forall\theta\in\Theta_{B}:=
+  \overline{\Theta}_{0}\cap \overline{\Theta}_{1}$
+
+\item If a test unbiased and has continuous power function, it is
+  similar on the boundary
+\item If $\Theta$ is finite, or has no cluster points (eg $\Theta$ is
+  set of integers), then $\beta_{\phi}(\theta)$ continuous
+\item Suppose $P_{\theta}$ such that power $\beta_{\phi}(\theta)$ is
+  continuous for all tests and $\phi_{0}$ is a level $\alpha$ test of
+  $H_{0}:\theta\in\Theta_{0}$ vs $H_{1}:\theta\in\Theta_{1}$. If
+  $\phi_{0}$ is uniformly most powerful among all tests similar on the
+  boundary at level $\alpha$, then $\phi_{0}$ UMPU
+\end{itemize}
+
+\subsection{Application to one-parameter exponential families}
+
+\begin{itemize}
+\item Consider $p_{\theta}(x) = c(\theta)\exp[\theta T(x)]h(x)$
+  \begin{enumerate}
+  \item $H_{0}:\theta\leq\theta_{0}$ vs $H_{1}:\theta>\theta_{0}$
+  \item $H_{0}:\theta\not\in (\theta_{1}, \theta_{2})$ vs
+    $H_{1}:\theta\in(\theta_{1},\theta_{2})$
+  \item $H_{0}:\theta\in[\theta_{1},\theta_{2}]$ vs
+    $H_{1}:\theta\not\in[\theta_{1},\theta_{2}]$
+  \item $H_{0}:\theta=\theta_{0}$ vs $H_{1}:\theta\neq\theta_{0}$
+  \end{enumerate}
+\item By NP lemma, there is a UMP test for 1, by generalized NP, we
+  have UMP for 2.
+\item Note that for this exponential family, all power functions
+  $\beta_{\phi}(\theta)$ are continuous and smooth in $\theta$
+\item \textbf{Theorem:} The test
+  \begin{equation}
+    \phi(x) = \begin{cases}
+      1 & T(x) < C_{1}\text{ or } T(x) > C_{2} \\
+      \gamma_{i} & T(x) = C_{i},\enskip i=1,2 \\
+      0 & C_{1}<T(x)<C_{2}
+    \end{cases}
+  \end{equation}
+  where $C$, $\gamma$ satisfy $\beta_{\phi}(\theta_{1}) =
+  \beta_{\phi}(\theta_{2}) = \alpha$ is UMPU for 3 at level
+  $\alpha$. If $\alpha\in(0,1)$, no UMP test exists
+\item Further, if we also have $\E_{\theta_{0}}\phi(X) = \alpha$,
+  $\E_{\theta_{0}}[T(X)\phi(X)] = \alpha\E_{\theta_{0}}T(X)$, then
+  $\phi$ is UMPU for 4. If $T$ has a symmetric distribution, then
+  $\E_{\theta_{0}}\phi(X) = \alpha$, $C_{2} = 2\alpha-C_{1}$ and
+  $\gamma_{1}=\gamma_{2}$ determine the constants. If
+  $\alpha\in(0,1)$, no UMP test exists
+\end{itemize}
+
+\section{Unbiasedness for Hypothesis Testing II}
+
+\subsection{Neyman Structure}
+
+\begin{itemize}
+\item In the presence of nuisance parameter $\vartheta$, we can condition on a
+  sufficient statistic for $\vartheta$---which frees the distribution
+  from $\vartheta$---we can write $\psi_{t}(x)$ if $T(x)=t$.
+
+\item We want to consider $H_{0}:\theta\in\Theta_{0}$ vs
+  $H_{1}:\theta\in\Theta_{1}$ which is equivalent to
+  $H_{0}:(\theta,\vartheta)\in\Omega_{0}$ vs
+  $H_{1}:(\theta,\vartheta)\in\Omega_{1}$ where
+  $\Omega_{i}=\{(\theta,\vartheta):\theta\in\Theta_{i}\}$
+\item A test satisfying $\E_{\theta}(\phi|T)=\alpha$
+  $\forall\theta\in\Theta_{B}$ has Neyman structure wrt $T$.
+\item Critical function $\phi$ is similar wrt ${\cal P}$ if
+  $\E_{P}\phi = \alpha$ is independent of $P\in{\cal P}$
+\item Let $T$ be sufficient for ${\cal P}$, and ${\cal
+    P}^{T}=\{P^{T}:P\in{\cal P}\}$ where $P^{T}$ is the dist of $T$
+  when $X\sim P$. Critical function $\phi$ has Neyman structure wrt
+  $T$ if $\E(\phi|T)=\alpha$ a.e. ${\cal P}^{T}$
+\item If $\phi$ has Neyman structure wrt $T$, it is similar wrt ${\cal P}$
+
+\item \textbf{Theorem:} Let $T$ be sufficient for ${\cal P}$. Then all
+  critical functions that are similar wrt ${\cal P}$ have Neyman
+  structure wrt $T\iff{\cal P}^{T}$ is bounded complete
+\item \textbf{Theorem:} The UMPU conditional test is: Suppose
+  $X\sim P_{\theta,\vartheta}$, $T$ a statistic of $X$, and we want to
+  test $H_{0}:\theta\in\Theta_{0}$ vs
+  $H_{1}:\theta\in\Theta_{1}$. Further, suppose that
+  \begin{itemize}
+  \item The distributions $P_{\theta,\vartheta}$ have continuous power
+    functions for every test
+  \item For each fixed $\theta$, $T$ is sufficient for $\vartheta$
+  \item For each fixed $\theta\in\Theta_{B}$, $T$ is boundedly
+    complete for $\vartheta$
+  \item For each $t$, $\theta$ being the only parameter for the
+    conditional distribution of $X$ given $T=t$, $\psi_{t}$ is a
+    level-$\alpha$ test of $H_{0}$ vs $H_{1}$, and is UMP among all
+    tests that are similar on the boundary at level $\alpha$
+  \end{itemize}
+  Then $\phi(x) = \psi_{T(x)}(x)$ is UMPU.
+
+\end{itemize}
+
+\subsection{UMPU tests for multiparameter exponential families}
+
+\begin{itemize}
+\item For test 1, $\phi_{1}(x)=\phi(U(x),\mathbf{T}(x))$ with
+  \begin{equation}
+    \phi(u,\mathbf{t})=\begin{cases} 1 & u>C(\mathbf{t}) \\
+      \gamma(\mathbf{t}) & u = C(\mathbf{t}) \\
+      0 & u < C(\mathbf{t}) \end{cases}
+  \end{equation}
+  is UMPU where $C(\mathbf{t}),\gamma(\mathbf{t})$ are such that
+  $\E_{\theta_{0}}[\phi(U,\mathbf{t})|\mathbf{T=t}]=\alpha$ $\forall\mathbf{t}$
+
+
+\item For test 2, $\phi_{2}(x) = \phi(U(x),\mathbf{T}(x))$, with
+  \begin{equation}
+    \phi(u,\mathbf{t})=\begin{cases}
+      1 & C_{1}(\mathbf{t})<u<C_{2}(\mathbf{t}) \\
+      \gamma_{i}(\mathbf{t}) & u = C_{i}(\mathbf{t}), \enskip i=1,2\\
+      0 & u < C_{1}(\mathbf{t})\text{ or }u>C_{2}(\mathbf{t})
+    \end{cases}
+  \end{equation}
+  where $C$, $\gamma$ chosen so that
+  $\E_{\theta_{i}}[\phi(U,\mathbf{t})|\mathbf{T=t}]=\alpha$
+  $\forall\mathbf{t}$, $i=1,2$
+
+\item For test 3, $\phi_{3}(x) = \phi(U(x),\mathbf{T}(x))$, with
+  \begin{equation}
+    \phi(u,\mathbf{t})=\begin{cases}
+      1 & u < C_{1}(\mathbf{t})\text{ or }u>C_{2}(\mathbf{t}) \\
+      \gamma_{i}(\mathbf{t}) & u = C_{i}(\mathbf{t}), \enskip i=1,2\\
+      0 & C_{1}(\mathbf{t})<u<C_{2}(\mathbf{t})
+    \end{cases}
+  \end{equation}
+  where $C$, $\gamma$ chosen so that
+  $\E_{\theta_{i}}[\phi(U,\mathbf{t})|\mathbf{T=t}]=\alpha$
+  $\forall\mathbf{t}$, $i=1,2$
+
+\item For test 4, use the same as for test 3 with $C$, $\gamma$ such
+  that $\E_{\theta_{0}}[\phi(U,\mathbf{t})|\mathbf{T=t}]=\alpha$
+  $\forall\mathbf{t}$ and
+  $\E_{\theta_{0}}[U\phi(U,\mathbf{t})|\mathbf{T=t}] =
+  \alpha\E_{\theta_{0}}(U|\mathbf{T=t})$ $\forall\mathbf{t}$.
+\end{itemize}
+
+\subsection{UMPU unconditional tests}
+
+\begin{itemize}
+\item Under the same assumptions as for the conditional tests, suppose
+  we can find statistic $V=h(U,\mathbf{T})$ which is independent of
+  $\mathbf{T}$ when $\theta\in\Theta_{B}$, such that $h(u,\mathbf{t})$
+  is strictly increasing in $u$ for fixed $\mathbf{t}$:
+  \begin{itemize}
+  \item Test 1: $\phi_{1}(x)=\psi(V(x))$,
+    \begin{equation}
+      \phi(v)=\begin{cases}
+        1 & v > C \\
+        \gamma & v=C \\
+        0 & v<C
+      \end{cases}
+    \end{equation}
+    is UMPU where $C,\gamma$ independent of $\mathbf{t}$ such that
+    $E_{\theta_{0}}\phi(V)=\alpha$
+  \item Test 3: $\phi_{3}(x) = \phi(V(x))$ with
+    \begin{equation}
+      \phi(v) =
+      \begin{cases}
+        1 & v<C_{1}\text{ or }v>C_{2} \\
+        \gamma_{i} & v=C_{i},\enskip i=1,2 \\
+        0 & C_{1}<v<C_{2}
+      \end{cases}
+    \end{equation}
+    is UMPU where $C,\gamma$ independent of $\mathbf{t}$ and
+    $\E_{\theta_{1}}\phi(V) = \E_{\theta_{2}}\phi(V)=\alpha$
+  \item Test 2: $\phi_{2}(x;\alpha) = 1-\phi_{3}(x;1-\alpha)$ is UMPU
+  \item Test 4: If $h(u,\mathbf{t})=a(\mathbf{t})u + b(\mathbf{t})$,
+    $a(\mathbf{t})>0$, then $\phi_{4}(x) = \phi(V(x))$ is UMPU, where
+    $\phi$ is the same as for test 3 with $C,\gamma$ independent of
+    $\mathbf{t}$ such that $\E_{\theta_{0}}\phi(V)=\alpha$ and
+    $\E_{\theta_{0}}[V\phi(V)]=\alpha\E_{\theta_{0}}V$
+  \end{itemize}
+
+\end{itemize}
+
+
+\end{multicols}
+
+\end{document}
+
