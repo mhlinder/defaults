@@ -1,7 +1,5 @@
 /*
 
-
-
 Colors: https://coolors.co/086788-07a0c3-f0c808-fff1d0-dd1c1a
 
 */
@@ -18,7 +16,7 @@ a.head {
 }
 
 body {
-    background-color: white;
+    background-color: silver;
     color: black;
 }
 
@@ -62,7 +60,7 @@ td, th {
     border: 2px solid gray;
     margin-top: 20px;
     padding: 20px;
-    background-color: silver;
+    background-color: white;
     color: black;
 }
 
