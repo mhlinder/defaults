@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="normalize.css">
     <link rel="stylesheet" href="skeleton.css">
-    <link rel="stylesheet" href="custom.css?a=2">
+    <link rel="stylesheet" href="custom.css?a=3">
         
     <!-- This provides Javascript libraries and supplemental CSS -->
     
