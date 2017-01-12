@@ -46,7 +46,7 @@ if (empty($presenter) || empty($email) || empty($affiliation) || empty($title) |
 
     <p><strong class="red">Please review your submission carefully. The
       fields will be printed in the program booklet exactly as
-      shown.</strong></p>
+      shown. (LaTeX will be rendered.)</strong></p>
 
     <p>
       <table>
@@ -56,7 +56,7 @@ if (empty($presenter) || empty($email) || empty($affiliation) || empty($title) |
         <tr><td><strong>Presenter affiliation</strong></td><td><?php echo $affiliation; ?></td></tr>
         <tr><td><strong>Title</strong></td><td><?php echo $title; ?></td></tr>
         <tr><td><strong>Full author list</strong></td><td><?php echo $authors; ?></td></tr>
-        <tr><td><strong>Abstract text</strong></td><td><?php echo $abstract; ?></td></tr>
+        <tr><td><strong>Abstract text (raw LaTeX)</strong></td><td><code><?php echo $abstract; ?></code></td></tr>
       </table>
     </p>
 

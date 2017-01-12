@@ -2,7 +2,7 @@
 
 for fn in `\ls md` ; do
     b=${fn%.*}
-    if [ "$b" == "abstractform" ]; then
+    if [[ $b =~ ^abstract.*$ ]]; then
         pandoc --template template.html -T "Title" --smart \
                -f markdown+link_attributes+header_attributes \
                -H html/abstractdata/abstractheader.php \

@@ -23,7 +23,7 @@
     </tr>
 
     <tr>
-      <td>Presenter affiliation</td>
+      <td>Presenter affiliation*</td>
       <td><input type="text" name="affiliation" id="affiliation" placeholder="University of California, Berkeley" size="30" /></td>
     </tr>
 
@@ -53,6 +53,12 @@
   </table>
   <emph class="red">LaTeX formatting is permitted for all text entry fields.</emph>
 </form>
+
+<p>
+  * These affiliations names are offered as suggested spellings for
+  some academic institutions. If your institution is not present, you
+  may still enter it in the form.
+</p>
 
 <script>
  var institution_list = ["<?php
