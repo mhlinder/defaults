@@ -1,5 +1,7 @@
 ---
 title: This is a title
+author: Henry Linder (mhlinder@gmail.com)
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 bibliography: ~/links/references.bib
 csl: apa.csl # located in ~/.csl
 output:
