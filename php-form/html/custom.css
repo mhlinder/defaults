@@ -46,6 +46,23 @@ ol > li::before {
     text-align: right;
     padding-right: .3em;
 }
+ul {
+    counter-reset: foo;
+    display: table;
+}
+ul > li {
+    counter-increment: foo;
+    display: table-row;
+    list-style: none;
+}
+
+ul > li::before {
+    content: counter(foo) ".";
+    display: table-cell; /* aha! */
+    text-align: right;
+    padding-right: .3em;
+}
+
 
 table {
     margin-bottom: 0;
@@ -56,7 +73,7 @@ td, th {
     padding-top: 0;
 }
 
-.box, .toprow, .ui-menu {
+.box, .toprow {
     border: 2px solid gray;
     margin-top: 20px;
     padding: 20px;
@@ -66,11 +83,6 @@ td, th {
 
 .container {
     margin-bottom: 3%;
-}
-
-.imgfloat {
-    float: right;
-    padding-left: 15px;
 }
 
 .red { color: red; }

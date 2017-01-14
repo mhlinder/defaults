@@ -30,7 +30,6 @@ while ( ($data = fgetcsv($handle)) !== FALSE ) {
 	  <option value="1">Short Course 1</option>
 	  <option value="2">Short Course 2</option>
 	  <option value="3">Short Course 3</option>
-	  <option value="4">Short Course 4</option>
 	</select>
       </td>
     </tr>

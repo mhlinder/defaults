@@ -2,5 +2,5 @@
 title: Registration Summary
 ---
 
-<?php include("regsummary0.php"); ?>
+<?php include("regdata/regsummary0.php"); ?>
 
