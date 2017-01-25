@@ -63,7 +63,7 @@ if (empty($presenter) || empty($email) || empty($affiliation) || empty($title) |
     <p>
       <form id="data" name="data" method="post" enctype="multipart/form-data" action="abstractsend">
         <input type="hidden" name="session" value="<?php echo $session; ?>">
-        <input type="hidden" name="preesenter" value="<?php echo $presenter; ?>">
+        <input type="hidden" name="presenter" value="<?php echo $presenter; ?>">
         <input type="hidden" name="email" value="<?php echo $email; ?>">
         <input type="hidden" name="affiliation" value="<?php echo $affiliation; ?>">
         <input type="hidden" name="title" value="<?php echo $title; ?>">
