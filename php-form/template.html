@@ -53,6 +53,13 @@
 	<div class="two-thirds column">
 	  <div class="main box">
 	    <h3>$title$</h3>
+
+            $if(toc)$
+            <div id="$idprefix$toc">
+              $toc$
+            </div>
+            $endif$
+
 	    $body$
 	  </div> <!-- .main -->
 	</div>
