@@ -9,6 +9,13 @@ output:
     template: ~/links/defaults/rmd/mhl.tex
 ---
 
+Named chunks can be used with
+
+```
+library(knitr)
+read_chunk("2017-03-09.R")
+```
+
 We consider the R dataset
 [Loblolly](http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/Loblolly.html),
 a data frame with measurements of height (feet) and age (year), for 84
