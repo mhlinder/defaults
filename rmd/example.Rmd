@@ -11,7 +11,7 @@ output:
 
 Named chunks can be used with
 
-```
+```{r, echo = FALSE}
 library(knitr)
 read_chunk("2017-03-09.R")
 ```
