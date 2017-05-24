@@ -1,10 +1,14 @@
+
 \documentclass{beamer}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
+\usepackage{apacite}
+
 \title{This is an in-house theme}
-\date{Today}
 \author{M. Henry Linder}
+\date{\today}
 
 \usetheme{mhl}
 
@@ -15,10 +19,38 @@
 \end{frame}
 
 \begin{frame}
+  \Large Research meeting \\[1em]
+  \small\scshape{
+    Henry Linder \\
+    \texttt{mhlinder@gmail.com} \\[1em]
+    2017-05-25}
+\end{frame}
+
+\begin{frame}{Overview}
+  \begin{itemize}
+  \item RICh-PET: ncRNA--DNA interactions
+  \item ADNI
+  \item BRCA
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Sup mothafucka}
 
   This is some math:
   \[ \pi(\theta|x) \propto I(0<x<1) \]
 \end{frame}
 
+
+\section{References}
+
+\begin{frame}[allowframebreaks]{References}
+
+  \bibliographystyle{apacite}
+  \bibliography{~/links/references.bib}
+
+\end{frame}
+
+
 \end{document}
+
