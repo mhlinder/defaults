@@ -1,0 +1,9 @@
+---
+title: This is a title
+author: Henry Linder (matthew_linder@apple.com)
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+woutput:
+  pdf_document:
+    template: ~/links/defaults/rmd/mhl.tex
+---
+
